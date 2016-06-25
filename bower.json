@@ -1,0 +1,19 @@
+{
+  "name": "OpenCloth.ts",
+  "version": "1.0.0",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "TSM": "vexator/TSM",
+    "underscore": "~1.8.3",
+    "underscore-contrib": "~0.3.0",
+    "twgl.js": "~0.0.23",
+    "three.js": "~0.71.0"
+  }
+}

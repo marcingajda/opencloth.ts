@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>OpenCloth.js</title>
+
+    <!-- libraries -->
+    <script src="bower_components/TSM/TSM/tsm-0.7.min.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/underscore-contrib/dist/underscore-contrib.js"></script>
+    <script src="bower_components/three.js/three.js"></script>
+    <script src="scripts/common/tsm_extra.js"></script>
+
+    <!-- scripts/mss/MassSpringSystem.ts -->
+    <script src="scripts/mss/MassSpringSystem.js"></script>
+    <script src="scripts/mss/Particle.js"></script>
+    <script src="scripts/mss/Scene.js"></script>
+    <script src="scripts/mss/Simulation.js"></script>
+    <script src="scripts/mss/Spring.js"></script>
+    <script src="scripts/mss/Cloth.js"></script>
+    <script src="scripts/mss/Ellipsoid.js"></script>
+    <script src="scripts/mss/Options.js"></script>
+
+    <style>
+        body{
+            background: black;
+            font-family: 'Tahoma', serif;
+            color: white;
+        }
+        canvas{
+            float: left;
+        }
+        input[type=number]{
+            width: 210px;
+            margin-left: 0;
+            border: none;
+            float: left;
+            margin-right: 6px;
+        }
+        input.medium{
+            width: 102px;
+        }
+        input.small{
+            width: 66px;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Mass-Sprint System</h1>
+
+    <canvas id="glCanvas" width="600" height="600"></canvas>
+
+    <input id="row" type="number" value="20" min="1" max="50" step="1"> Quads in row<br>
+    <input id="column" type="number" value="20" min="1" max="50" step="1"> Quads in column<br>
+    <input id="width" type="number" value="4" min="1" max="50" step="1"> Quad width<br>
+    <input id="height" type="number" value="4" min="1" max="50" step="1"> Quad height<br>
+    <br>
+    <input id="KsStruct" class="medium" type="number" value="0.5" min="0" max="1" step="0.01">
+    <input id="KdStruct" class="medium" type="number" value="-0.25" min="-1" max="0" step="0.01"> KsStruct/KdStruct<br>
+    <input id="KsShear" class="medium" type="number" value="0.5" min="0" max="1" step="0.01">
+    <input id="KdShear" class="medium" type="number" value="-0.25" min="-1" max="0" step="0.01"> KsShear/KdShear<br>
+    <input id="KsBend" class="medium" type="number" value="0.85" min="0" max="1" step="0.01">
+    <input id="KdBend" class="medium" type="number" value="-0.25" min="-1" max="0" step="0.01"> KsBend/KdBend<br>
+    <input id="damping" type="number" value="-0.02" min="-1" max="0" step="0.01"> Damping<br>
+    <input id="mass" type="number" value="0.3" min="0.1" max="5" step="0.1"> Mass<br>
+
+    <br>
+    <input id="gravityX" class="small" type="number" value="0" min="-0.1" max="0.1" step="0.001">
+    <input id="gravityY" class="small" type="number" value="-0.01" min="-0.1" max="0.1" step="0.001">
+    <input id="gravityZ" class="small" type="number" value="0" min="-0.1" max="0.1" step="0.001">
+    Gravity<br>
+    <input type="submit" value="Run" onclick="run()">
+
+
+    <div id="debug"></div>
+    <script>
+        var mss = null;
+        function run(){
+            if(mss!==null){
+                mss.destroy();
+            }
+
+            var options = new Options();
+
+            options.row             = +document.getElementById('row').value;
+            options.column          = +document.getElementById('column').value;
+            options.width           = +document.getElementById('width').value;
+            options.height          = +document.getElementById('height').value;
+
+            options.KsStruct        = +document.getElementById('KsStruct').value;
+            options.KdStruct        = +document.getElementById('KdStruct').value;
+            options.KsShear         = +document.getElementById('KsShear').value;
+            options.KdShear         = +document.getElementById('KdShear').value;
+            options.KsBend          = +document.getElementById('KsBend').value;
+            options.KdBend          = +document.getElementById('KdBend').value;
+
+            options.mass            = +document.getElementById('mass').value;
+            options.damping         = +document.getElementById('damping').value;
+
+            options.gravityX        = +document.getElementById('gravityX').value;
+            options.gravityY        = +document.getElementById('gravityY').value;
+            options.gravityZ        = +document.getElementById('gravityZ').value;
+
+            mss = new MassSpringSystem();
+            mss.simulate(options);
+        }
+        run();
+    </script>
+</body>
+</html>

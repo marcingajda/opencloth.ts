@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>OpenCloth.js</title>
+
+    <!-- libraries -->
+    <script src="bower_components/TSM/TSM/tsm-0.7.min.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/underscore-contrib/dist/underscore-contrib.js"></script>
+    <script src="bower_components/three.js/three.js"></script>
+    <script src="scripts/common/tsm_extra.js"></script>
+
+    <!-- scripts/pbd/Particle.ts -->
+    <script src="scripts/pbd/Particle.js"></script>
+    <!-- scripts/pbd/Cloth.ts -->
+    <script src="scripts/pbd/Cloth.js"></script>
+    <!-- scripts/pbd/Ellipsoid.ts -->
+    <script src="scripts/pbd/Ellipsoid.js"></script>
+
+    <!-- scripts/pbd/BendingConstraint.ts -->
+    <script src="scripts/pbd/BendingConstraint.js"></script>
+    <!-- scripts/pbd/DistanceConstraint.ts -->
+    <script src="scripts/pbd/DistanceConstraint.js"></script>
+
+    <!-- scripts/pbd/Scene.ts -->
+    <script src="scripts/pbd/Scene.js"></script>
+    <!-- scripts/pbd/Simulation.ts -->
+    <script src="scripts/pbd/Simulation.js"></script>
+
+    <!-- scripts/pbd/Options.ts -->
+    <script src="scripts/pbd/Options.js"></script>
+
+    <!-- scripts/pbd/PBD.ts -->
+    <script src="scripts/pbd/PBD.js"></script>
+
+    <style>
+        body{
+            background: black;
+            font-family: 'Tahoma', serif;
+            color: white;
+        }
+        canvas{
+            float: left;
+        }
+        input[type=number]{
+            width: 210px;
+            margin-left: 0;
+            border: none;
+            float: left;
+            margin-right: 6px;
+        }
+        input.small{
+            width: 66px;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Position Based Dynamics</h1>
+
+    <canvas id="glCanvas" width="600" height="600"></canvas>
+
+    <input id="row" type="number" value="20" min="1" max="50" step="1"> Points in row<br>
+    <input id="column" type="number" value="20" min="1" max="50" step="1"> Points in column<br>
+    <input id="width" type="number" value="4" min="1" max="50" step="1"> Horizontal space<br>
+    <input id="height" type="number" value="4" min="1" max="50" step="1"> Vertical space<br>
+    <br>
+    <input id="stretch" type="number" value="0.25" min="0" max="1" step="0.01"> Stretching<br>
+    <input id="bend" type="number" value="0.5" min="0.00" max="1" step="0.01"> Bending<br>
+    <input id="damp" type="number" value="0.00125" min="0" max="1" step="0.00001"> Damping<br>
+    <input id="globalDampening" type="number" value="0.98" min="0" max="1" step="0.00001"> Global damping<br>
+    <br>
+    <input id="gravityX" class="small" type="number" value="0" min="-0.03" max="0.03" step="0.001">
+    <input id="gravityY" class="small" type="number" value="-0.01" min="-0.03" max="0.03" step="0.001">
+    <input id="gravityZ" class="small" type="number" value="0" min="-0.03" max="0.03" step="0.001">
+    Gravity<br>
+    <input type="submit" value="Run" onclick="run()">
+    <script>
+        var simulation = null;
+        function run(){
+            if(simulation!==null){
+                simulation.destroy();
+            }
+
+            var options = new Options();
+
+            options.row             = +document.getElementById('row').value;
+            options.column          = +document.getElementById('column').value;
+            options.width           = +document.getElementById('width').value;
+            options.height          = +document.getElementById('height').value;
+
+            options.stretch         = +document.getElementById('stretch').value;
+            options.bend            = +document.getElementById('bend').value;
+            options.damp            = +document.getElementById('damp').value;
+            options.globalDampening = +document.getElementById('globalDampening').value;
+
+            options.gravityX        = +document.getElementById('gravityX').value;
+            options.gravityY        = +document.getElementById('gravityY').value;
+            options.gravityZ        = +document.getElementById('gravityZ').value;
+
+            console.log(options);
+
+            simulation = new PositionBasedDynamics();
+            simulation.simulate(options);
+        }
+        run();
+    </script>
+</body>
+</html>
